@@ -1,0 +1,116 @@
+version: 2.1
+
+jobs:
+
+  setup:
+    docker:
+      - image: dboneslabs/tools-docker-gittools:latest
+    steps:
+      - checkout
+      - run:
+          name: version
+          command: |
+            mkdir semver
+            dotnet-gitversion
+            
+            dotnet-gitversion | jq '.BranchName' > ./semver/branch.txt
+            dotnet-gitversion | jq '.SemVer' > ./semver/full.txt
+            dotnet-gitversion | jq '.NuGetVersionV2' > ./semver/nuget.txt
+            dotnet-gitversion | jq '.NuGetPreReleaseTagV2' > ./semver/nuget-sfx.txt
+            dotnet-gitversion | jq '.MajorMinorPatch' > ./semver/mmp.txt
+            
+            export BRANCH=$(cat ./semver/branch.txt)
+            echo $BRANCH
+            
+            export V=\"$(git describe --tags --abbrev=0)\"
+            echo $V
+            
+            cp ./semver/nuget.txt ./semver/version.txt
+            
+            if [[ $BRANCH == "\"(no branch)\"" ]]; then echo "tagged release"; echo $V > ./semver/version.txt; fi;
+
+            cat ./semver/version.txt
+            
+            ls
+            ls ./semver
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - src
+            - semver
+
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: build
+          command: |
+            
+            ls
+            ls ./semver
+            APP_VERSION=$(cat ./semver/version.txt)
+            echo $APP_VERSION
+
+            cd ./src
+            ls
+
+            dotnet restore Template.proj
+            dotnet pack Template.proj --no-build --no-dependencies --no-restore --force -p:Version=$APP_VERSION
+
+            mkdir ./../nupkgs
+            mv ./bin/**/*.nupkg ./../nupkgs
+
+            cd ./../nupkgs
+            pwd
+            ls
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - nupkgs
+            - src
+
+  publish:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - attach_workspace:
+          at: ./
+      - run: |
+
+          pwd
+          cd nupkgs
+          ls
+          
+          dotnet nuget add source https://nuget.pkg.github.com/dbones-labs/index.json -n github -u dbones -p ${GH_TOKEN} --store-password-in-clear-text
+          dotnet nuget push "*.nupkg" --source "github"
+                  
+workflows:
+  version: 2
+  
+  build_and_publish:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              ignore:
+                - docs
+            tags:
+              only: /^v?\d\.\d\.\d/
+      - build:
+          filters:
+            tags:
+              only: /^v?\d\.\d\.\d/
+          requires:
+            - setup
+      - publish:
+          context: build-ctx
+          filters:
+            tags:
+              only: /^v?\d\.\d\.\d/
+          requires:
+            - build
