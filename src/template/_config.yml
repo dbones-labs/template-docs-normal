@@ -44,7 +44,7 @@ heading_anchors: true
 
 # Footer content 
 # appears at the bottom of every page's main content
-footer_content: "Copyright &copy; dbones.co.uk (David Rundle). Made with tea in the Lab"
+footer_content: "Copyright &copy; dbones.co.uk. Made with tea in the Lab"
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter

@@ -8,14 +8,14 @@
     "identity": "DBones.Template.Docs.normal",
     "name": "normal docs tempalate",
     "shortName": "normal-doc",
-    "sourceName": "normaldoc",
+    "sourceName": "ProjectName",
 
     "symbols": {
         "organisation-name": {
             "type": "parameter",
             "datatype": "text",
             "replaces": "organisation-name",
-            "defaultValue": ""
+            "defaultValue": "dbones-labs"
         },
         "project-name": {
             "type": "parameter",
