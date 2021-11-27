@@ -21,7 +21,7 @@ dotnet nuget add source https://nuget.pkg.github.com/organisation-name/index.jso
 Install the required packages
 
 ```sh
-dotnet add PROJECT package project-name
+dotnet add ProjectName package project-name
 ```
 
 All the `auditable` are listed here: [![Nuget](https://img.shields.io/badge/nuget-project-name-blue)](https://github.com/orgs/organisation-name/packages?repo_name=project-name)
