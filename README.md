@@ -1,9 +1,9 @@
 # template-docs-normal
 
-[![release](https://img.shields.io/github/v/release/dbones-labs/template--docs--normal?logo=nuget)](https://github.com/dbones-labs/template-docs-normal/releases) [![Nuget](https://img.shields.io/badge/nuget-template--docs--normal-blue)](https://github.com/orgs/dbones-labs/packages?repo_name=template-docs-normal)
+[![release](https://img.shields.io/github/v/release/dbones-labs/template-docs-normal?logo=nuget)](https://github.com/dbones-labs/template-docs-normal/releases) [![Nuget](https://img.shields.io/badge/nuget-template--docs--normal-blue)](https://github.com/orgs/dbones-labs/packages?repo_name=template-docs-normal)
 [![docs](https://img.shields.io/badge/docs-template--docs--normal-blue)](https://dbones-labs.github.io/template-docs-normal/)
 
-[![dbones-labs](https://circleci.com/gh/dbones-labs/template--docs--normal.svg?style=shield)](https://app.circleci.com/pipelines/github/dbones-labs/template-docs-normal)
+[![dbones-labs](https://circleci.com/gh/dbones-labs/template-docs-normal.svg?style=shield)](https://app.circleci.com/pipelines/github/dbones-labs/template-docs-normal)
 
 
 This is for simple docs
